@@ -1,0 +1,23 @@
+services:
+  ibmmq:
+    image: icr.io/ibm-messaging/mq:latest
+    container_name: ibmmq
+    ports:
+      - "1414:1414"
+      - "9443:9443"
+      - "9157:9157"
+    volumes:
+      - qm1data:/mnt/mqm
+    environment:
+      LICENSE: accept
+      MQ_QMGR_NAME: QM1
+      MQ_ADMIN_PASSWORD: passw0rd
+      MQ_APP_PASSWORD: passw0rd
+      MQ_ENABLE_METRICS: true
+      MQ_DEV: true
+    stdin_open: true
+    tty: true
+    restart: always
+
+volumes:
+  qm1data:

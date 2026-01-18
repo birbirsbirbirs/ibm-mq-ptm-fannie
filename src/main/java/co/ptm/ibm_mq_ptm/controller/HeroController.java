@@ -1,0 +1,43 @@
+package co.ptm.ibm_mq_ptm.controller;
+
+import co.ptm.ibm_mq_ptm.model.Hero;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.jms.JmsException;
+import org.springframework.jms.core.JmsTemplate;
+import org.springframework.web.bind.annotation.*;
+
+@Slf4j
+@RequiredArgsConstructor
+@RestController
+@RequestMapping("/hero")
+public class HeroController {
+
+    private final JmsTemplate jmsTemplate;
+
+    @PostMapping
+    public String publishHero(@RequestBody Hero hero) {
+
+        try{
+            log.info("publishHero: {}", hero);
+            jmsTemplate.convertAndSend("DEV.QUEUE.1", hero.toString());
+            return "OK";
+        }catch(JmsException ex){
+            ex.printStackTrace();
+            return "FAIL";
+        }
+
+    }
+
+    @GetMapping("hero-receive")
+    String recv(){
+        try{
+            String receivedMessage = jmsTemplate.receiveAndConvert("DEV.QUEUE.1").toString();
+            log.info("recv: {}", receivedMessage);
+            return receivedMessage;
+        }catch(JmsException ex){
+            ex.printStackTrace();
+            return "FAIL";
+        }
+    }
+}
