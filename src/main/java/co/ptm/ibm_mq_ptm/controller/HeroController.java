@@ -16,11 +16,25 @@ public class HeroController {
     private final JmsTemplate jmsTemplate;
 
     @PostMapping
-    public String publishHero(@RequestBody Hero hero) {
+    public Hero publishHero(@RequestBody Hero hero) {
 
         try{
             log.info("publishHero: {}", hero);
             jmsTemplate.convertAndSend("DEV.QUEUE.1", hero.toString());
+            return hero;
+        }catch(JmsException ex){
+            ex.printStackTrace();
+            return null;
+        }
+
+    }
+
+    @PostMapping("/second")
+    public String publishHeroSecond(@RequestBody Hero hero) {
+
+        try{
+            log.info("publishHero: {}", hero);
+            jmsTemplate.convertAndSend("DEV.QUEUE.2", hero.toString());
             return "OK";
         }catch(JmsException ex){
             ex.printStackTrace();

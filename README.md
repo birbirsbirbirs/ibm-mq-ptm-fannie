@@ -10,7 +10,7 @@ docker compose up -d
 docker compose down
 ```
 
-* https://localhost:9443/ibmmq/console/login.html
+* https://localhost:9443
 * un: admin
 * pwd: passw0rd
 
