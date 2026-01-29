@@ -4,10 +4,21 @@ spring:
   output:
     ansi:
       enabled: always
-ibm:
-  mq:
-    queueManager: QM1
-    channel: DEV.ADMIN.SVRCONN
-    connName: localhost(1414)
-    user: admin
-    password: passw0rd
+  cloud:
+    stream:
+      bindings:
+        mqProducer-out-0:
+          destination: ptm
+
+ptm:
+  ibm:
+    mq:
+      queueManager: QM1
+      channel: DEV.ADMIN.SVRCONN
+      connName: localhost(1414)
+      user: admin
+      password: passw0rd
+
+logging:
+  level:
+    org.springframework.cloud.stream.messaging.DirectWithAttributesChannel: DEBUG

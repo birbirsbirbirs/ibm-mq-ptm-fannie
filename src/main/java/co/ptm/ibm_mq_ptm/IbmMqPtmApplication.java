@@ -16,7 +16,8 @@ public class IbmMqPtmApplication {
         SpringApplication.run(IbmMqPtmApplication.class, args);
     }
 
-    @JmsListener(destination = "DEV.QUEUE.2")
+//    @JmsListener(destination = "DEV.QUEUE.2")
+    @JmsListener(destination = "ptm")
     public void receiveMessage(String message) {
         log.info("received message: {}", message);
     }

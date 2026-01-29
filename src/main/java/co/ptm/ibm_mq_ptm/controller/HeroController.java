@@ -3,6 +3,7 @@ package co.ptm.ibm_mq_ptm.controller;
 import co.ptm.ibm_mq_ptm.model.Hero;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class HeroController {
 
     private final JmsTemplate jmsTemplate;
+    private final StreamBridge streamBridge;
 
     @PostMapping
     public Hero publishHero(@RequestBody Hero hero) {
@@ -34,7 +36,8 @@ public class HeroController {
 
         try{
             log.info("publishHero: {}", hero);
-            jmsTemplate.convertAndSend("DEV.QUEUE.2", hero.toString());
+//            jmsTemplate.convertAndSend("DEV.QUEUE.2", hero.toString());
+            jmsTemplate.convertAndSend("ptm", hero.toString());
             return "OK";
         }catch(JmsException ex){
             ex.printStackTrace();
@@ -53,5 +56,12 @@ public class HeroController {
             ex.printStackTrace();
             return "FAIL";
         }
+    }
+
+    @PostMapping("/stream/publish-hero")
+    public boolean streamPublishHero(@RequestBody Hero hero) {
+
+        boolean isSend = streamBridge.send("mqProducer-out-0", hero.toString());
+        return isSend;
     }
 }
