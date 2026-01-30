@@ -40,7 +40,7 @@ public class PtmMqMessageProducer extends MessageProducerSupport {
     }
 
     private String getPayload() {
-        return jmsTemplate.receiveAndConvert("DEV.QUEUE.1").toString();
+        return jmsTemplate.receiveAndConvert(destination.getName()).toString();
     }
 
 

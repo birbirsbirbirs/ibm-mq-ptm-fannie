@@ -29,9 +29,9 @@ public class PtmMqMessageBinder extends AbstractMessageChannelBinder<ConsumerPro
                                                           ProducerProperties producerProperties,
                                                           MessageChannel errorChannel) throws Exception {
         return message -> {
-//            String name = destination.getName();
+            String name = destination.getName();
             String payload = new String((byte[]) message.getPayload());
-            jmsTemplate.convertAndSend(payload);
+            jmsTemplate.convertAndSend(name,payload);
         };
     }
 

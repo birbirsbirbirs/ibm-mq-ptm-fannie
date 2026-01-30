@@ -36,8 +36,7 @@ public class HeroController {
 
         try{
             log.info("publishHero: {}", hero);
-//            jmsTemplate.convertAndSend("DEV.QUEUE.2", hero.toString());
-            jmsTemplate.convertAndSend("ptm", hero.toString());
+            jmsTemplate.convertAndSend("DEV.QUEUE.2", hero.toString());
             return "OK";
         }catch(JmsException ex){
             ex.printStackTrace();
@@ -62,6 +61,12 @@ public class HeroController {
     public boolean streamPublishHero(@RequestBody Hero hero) {
 
         boolean isSend = streamBridge.send("mqProducer-out-0", hero.toString());
+        return isSend;
+    }
+    @PostMapping("/stream/publish-hero-second")
+    public boolean streamPublishHeroSecond(@RequestBody Hero hero) {
+
+        boolean isSend = streamBridge.send("mqProducerSecond-out-0", hero.toString());
         return isSend;
     }
 }

@@ -1,3 +1,4 @@
+
 spring:
   application:
     name: ibm-mq-ptm
@@ -8,7 +9,15 @@ spring:
     stream:
       bindings:
         mqProducer-out-0:
-          destination: ptm
+          destination: DEV.QUEUE.1
+        mqProducerSecond-out-0:
+          destination: DEV.QUEUE.2
+        mqConsumerOne-in-0:
+          destination: DEV.QUEUE.1
+        mqConsumerSecond-in-0:
+          destination: DEV.QUEUE.2
+    function:
+      definition: mqConsumerOne;mqConsumerSecond
 
 ptm:
   ibm:
@@ -22,3 +31,6 @@ ptm:
 logging:
   level:
     org.springframework.cloud.stream.messaging.DirectWithAttributesChannel: DEBUG
+
+server:
+  port: 8080

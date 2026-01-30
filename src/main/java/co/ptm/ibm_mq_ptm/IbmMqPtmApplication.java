@@ -3,8 +3,11 @@ package co.ptm.ibm_mq_ptm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.jms.annotation.EnableJms;
-import org.springframework.jms.annotation.JmsListener;
+import org.springframework.messaging.Message;
+
+import java.util.function.Consumer;
 
 
 @Slf4j
@@ -16,10 +19,14 @@ public class IbmMqPtmApplication {
         SpringApplication.run(IbmMqPtmApplication.class, args);
     }
 
-//    @JmsListener(destination = "DEV.QUEUE.2")
-    @JmsListener(destination = "ptm")
-    public void receiveMessage(String message) {
-        log.info("received message: {}", message);
+    @Bean
+    public Consumer<Message<?>> mqConsumerOne() {
+        return message -> log.info("mqConsumerOne received message: {}", message.getPayload().toString());
+    }
+
+    @Bean
+    public Consumer<Message<?>> mqConsumerSecond() {
+        return message -> log.info("mqConsumerSecond received message: {}", message.getPayload().toString());
     }
 
 }

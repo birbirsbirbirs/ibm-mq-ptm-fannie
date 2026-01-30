@@ -8,14 +8,17 @@ import org.springframework.cloud.stream.provisioning.ProvisioningException;
 import org.springframework.cloud.stream.provisioning.ProvisioningProvider;
 
 public class MqConfigBinderProvisioner implements ProvisioningProvider<ConsumerProperties, ProducerProperties> {
+
     @Override
-    public ProducerDestination provisionProducerDestination(String name, ProducerProperties properties) throws ProvisioningException {
-        return null;
+    public ProducerDestination provisionProducerDestination(String name,
+                                                            ProducerProperties properties) throws ProvisioningException {
+        return new PtmMqMessageDestination(name);
     }
 
     @Override
-    public ConsumerDestination provisionConsumerDestination(String name, String group, ConsumerProperties properties) throws ProvisioningException {
-        return null;
+    public ConsumerDestination provisionConsumerDestination(String name,
+                                                            String group, ConsumerProperties properties) throws ProvisioningException {
+        return new PtmMqMessageDestination(name);
     }
 
     private class PtmMqMessageDestination implements ProducerDestination, ConsumerDestination {
